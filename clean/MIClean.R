@@ -13,6 +13,7 @@
 #               -School Year: 2007-2008 => 2011-2012   -Data Files: Accountability Results
 # Codebook: https://www.mischooldata.org/DistrictSchoolProfiles/EntitySummary/SchoolDataFile.aspx
 #               CLICK: K-12 School Data file table layouts
+# Link to Github: https://github.com/CRPE-UWB/State
 
 
 # Setup --------------------------------------------------------------------------------------------------------

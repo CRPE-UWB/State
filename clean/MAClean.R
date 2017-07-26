@@ -10,6 +10,7 @@
 #     Demographics: http://www.doe.mass.edu/infoservices/reports/enroll/default.html?yr=1112
 #             -Just Use Enrollment Data widget: School Year 2003-04 => 2016-17 and download 'Enrollment by School/Race'
 # Notes: 2002-3, 2008-9 were too different to include [for demographics]
+# Link to Github: https://github.com/CRPE-UWB/State
 
 # Setup --------------------------------------------------------------------------------------------------------
 rm(list=ls())

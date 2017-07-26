@@ -4,6 +4,7 @@
 # Created by: Kevin Cha on 07-17-17
 # Updated by: Kevin Cha on 07-25-17
 # Data from: AWS (S3)
+# Link to Github: https://github.com/CRPE-UWB/State
 
 # Setup --------------------------------------------------------------------------------------------------------
 rm(list=ls())
