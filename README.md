@@ -6,3 +6,5 @@ Included are the R codes used to clean the following states:
 * Missouri
 * Oklahoma
 * Texas
+
+Obtain the raw data files from: _____________________________
