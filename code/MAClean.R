@@ -53,6 +53,7 @@ demo_order2 <- c("SCHOOL_CODE", "SCHOOL_NAME", "DISTRICT_CODE", "DISTRICT_NAME",
                        "TWOORMORE_TOTAL", "TWOORMORE_ENROLL_PCT", "AMINDIAN_TOTAL", "AMINDIAN_ENROLL_PCT",
                        "PACISLAND_TOTAL", "PACISLAND_ENROLL_PCT", "WHITE_TOTAL", "WHITE_ENROLL_PCT")
 
+
 perf_list <- c("SCHOOL_NAME", "SCHOOL_CODE", "SUBJECT", "PROF_OR_HIGHER", "PROF_OR_HIGHER_PCT", "ADV", "ADV_PCT", "PROF", "PROF_PCT",
                "NEEDS_IMPROV", "NEEDS_IMPROV_PCT", "WARNING_FAIL", "WARNING_FAIL_PCT", "STUDENT_COUNT", 
                "COMPOSITE_PERF_INDEX", "MEDIAN_STUD_GROWTH_PERCENTILE", "NUM_STUD_GROWTH_PERCENTILE")
@@ -179,11 +180,11 @@ clean_demo2 <- function(df) {
   df$SCHOOL_NAME <- as.character(df$SCHOOL_NAME)
   
   # combines the rows of schools together
-  df <- df %>% 
+  df <- df %>%  
     group_by_("DISTRICT_CODE", "DISTRICT_NAME", "SCHOOL_CODE", "SCHOOL_NAME") %>% 
     summarise(sum(SCHOOL_TOTAL), sum(BLACK_TOTAL), sum(ASIAN_TOTAL), sum(HISPANIC_TOTAL),
               sum(TWOORMORE_TOTAL), sum(AMINDIAN_TOTAL), sum(PACISLAND_TOTAL), sum(WHITE_TOTAL))
-  
+ 
   # rename the column names
   colnames(df) <- demo_list2_a
   
