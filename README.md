@@ -21,9 +21,13 @@ install.packages(readxl)
 ```
 
 Folder Hiearchy:
+
 Parent Folder
+
 	- data (location of the raw data)
+
 	- cleaned_data (location of the cleaned data)
+	
 	- Code.R
 
 
