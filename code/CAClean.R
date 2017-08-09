@@ -3,7 +3,7 @@
 #              on Performance and Demographics/Enrollment
 # Title: Cleaning California 
 # Created by: Kevin Cha on 07-26-17
-# Updated by: Kevin Cha on 07-26-17
+# Updated by: Kevin Cha on 08-08-17
 # Data from: 
 #     Performance: STAR: http://star.cde.ca.gov/starresearchfiles.asp    CAASPP: http://caaspp.cde.ca.gov/ 
 #       -Click on 20XX CAASPP Test Results=>Research Files)
@@ -88,6 +88,8 @@ info_list <- c("COUNTY_CODE", "DISTRICT_CODE", "SCHOOL_CODE", "CHARTER_NUM", "YE
 no_more_special_characters <- function(df_col) {
   # need to replace the chracters
   require(gsubfn)
+  # make sure the col is character
+  df_col <- as.character(df_col)
   # list of special characters to replace with
   unwanted_array = list(    'Š'='S', 'š'='s', 'Ž'='Z', 'ž'='z', 'À'='A', 'Á'='A', 'Â'='A', 'Ã'='A', 'Ä'='A', 'Å'='A', 'Æ'='A', 'Ç'='C', 'È'='E', 'É'='E',
                             'Ê'='E', 'Ë'='E', 'Ì'='I', 'Í'='I', 'Î'='I', 'Ï'='I', 'Ñ'='N', 'Ò'='O', 'Ó'='O', 'Ô'='O', 'Õ'='O', 'Ö'='O', 'Ø'='O', 'Ù'='U',
@@ -142,24 +144,22 @@ clean_demo_1017 <- function(df) {
   df[is.na(df)] <- 0
   
   # create a MALE column
-  df$TOTAL_MALE <- df$AMINDIAN_M + df$ASIAN_M + df$BLACK_M + df$FILIPINO_M + df$HISPANIC_M
-  + df$NOTREPORTED_M + df$PACISLAND_M + df$TWOORMORE_M + df$WHITE_M
+  df$TOTAL_MALE <- rowSums(df[,c("AMINDIAN_M", "ASIAN_M", "BLACK_M", "FILIPINO_M", "HISPANIC_M", "NOTREPORTED_M", "PACISLAND_M", "TWOORMORE_M", "WHITE_M")], na.rm = TRUE) 
   # create a MALE column
-  df$TOTAL_FEMALE <- df$AMINDIAN_F + df$ASIAN_F + df$BLACK_F + df$FILIPINO_F + df$HISPANIC_F
-  + df$NOTREPORTED_F + df$PACISLAND_F + df$TWOORMORE_F + df$WHITE_F
+  df$TOTAL_FEMALE <- rowSums(df[,c("AMINDIAN_F", "ASIAN_F", "BLACK_F", "FILIPINO_F", "HISPANIC_F", "NOTREPORTED_F", "PACISLAND_F", "TWOORMORE_F", "WHITE_F")], na.rm = TRUE)
   # create a TOTAL_ENROLL column
-  df$TOTAL_ENROLL <- df$TOTAL_MALE + df$TOTAL_FEMALE
+  df$TOTAL_ENROLL <- rowSums(df[,c("TOTAL_MALE", "TOTAL_FEMALE")], na.rm = TRUE)
   
   # create columns that contain total ethnicity
-  df$AMINDIAN <- df$AMINDIAN_M + df$AMINDIAN_F
-  df$ASIAN <- df$ASIAN_M + df$ASIAN_F
-  df$BLACK <- df$BLACK_M + df$BLACK_F
-  df$FILIPINO <- df$FILIPINO_M + df$FILIPINO_F
-  df$HISPANIC <- df$HISPANIC_M + df$HISPANIC_F
-  df$NOTREPORTED <- df$NOTREPORTED_M + df$NOTREPORTED_F
-  df$PACISLAND <- df$PACISLAND_M + df$PACISLAND_F
-  df$TWOORMORE <- df$TWOORMORE_M + df$TWOORMORE_F
-  df$WHITE <- df$WHITE_M + df$WHITE_F
+  df$AMINDIAN <- rowSums(df[,c("AMINDIAN_M", "AMINDIAN_F")], na.rm = TRUE)
+  df$ASIAN <- rowSums(df[,c("ASIAN_M", "ASIAN_F")], na.rm = TRUE)
+  df$BLACK <- rowSums(df[,c("BLACK_M", "BLACK_F")], na.rm = TRUE)
+  df$FILIPINO <- rowSums(df[,c("FILIPINO_M", "FILIPINO_F")], na.rm = TRUE)
+  df$HISPANIC <- rowSums(df[,c("HISPANIC_M", "HISPANIC_F")], na.rm = TRUE)
+  df$NOTREPORTED <- rowSums(df[,c("NOTREPORTED_M", "NOTREPORTED_F")], na.rm = TRUE)
+  df$PACISLAND <- rowSums(df[,c("PACISLAND_M", "PACISLAND_F")], na.rm = TRUE)
+  df$TWOORMORE <- rowSums(df[,c("TWOORMORE_M", "TWOORMORE_F")], na.rm = TRUE)
+  df$WHITE <- rowSums(df[,c("WHITE_M", "WHITE_F")], na.rm = TRUE)
   
   # get rid of the separated gender columns
   df$AMINDIAN_F <- NULL
@@ -249,23 +249,21 @@ clean_demo_0809 <- function(df) {
   df[is.na(df)] <- 0
   
   # create a MALE column
-  df$TOTAL_MALE <- df$AMINDIAN_M + df$ASIAN_M + df$BLACK_M + df$FILIPINO_M + df$HISPANIC_M
-  + df$PACISLAND_M + df$TWOORMORE_M + df$WHITE_M
+  df$TOTAL_MALE <- rowSums(df[,c("AMINDIAN_M", "ASIAN_M", "BLACK_M", "FILIPINO_M", "HISPANIC_M", "PACISLAND_M", "TWOORMORE_M", "WHITE_M")], na.rm = TRUE) 
   # create a MALE column
-  df$TOTAL_FEMALE <- df$AMINDIAN_F + df$ASIAN_F + df$BLACK_F + df$FILIPINO_F + df$HISPANIC_F
-  + df$PACISLAND_F + df$TWOORMORE_F + df$WHITE_F
+  df$TOTAL_FEMALE <- rowSums(df[,c("AMINDIAN_F", "ASIAN_F", "BLACK_F", "FILIPINO_F", "HISPANIC_F", "NOTREPORTED_F", "PACISLAND_F", "TWOORMORE_F", "WHITE_F")], na.rm = TRUE)
   # create a TOTAL_ENROLL column
-  df$TOTAL_ENROLL <- df$TOTAL_MALE + df$TOTAL_FEMALE
+  df$TOTAL_ENROLL <- rowSums(df[,c("TOTAL_MALE", "TOTAL_FEMALE")], na.rm = TRUE)
   
   # create columns that contain total ethnicity
-  df$AMINDIAN <- df$AMINDIAN_M + df$AMINDIAN_F
-  df$ASIAN <- df$ASIAN_M + df$ASIAN_F
-  df$BLACK <- df$BLACK_M + df$BLACK_F
-  df$FILIPINO <- df$FILIPINO_M + df$FILIPINO_F
-  df$HISPANIC <- df$HISPANIC_M + df$HISPANIC_F
-  df$PACISLAND <- df$PACISLAND_M + df$PACISLAND_F
-  df$TWOORMORE <- df$TWOORMORE_M + df$TWOORMORE_F
-  df$WHITE <- df$WHITE_M + df$WHITE_F
+  df$AMINDIAN <- rowSums(df[,c("AMINDIAN_M", "AMINDIAN_F")], na.rm = TRUE)
+  df$ASIAN <- rowSums(df[,c("ASIAN_M", "ASIAN_F")], na.rm = TRUE)
+  df$BLACK <- rowSums(df[,c("BLACK_M", "BLACK_F")], na.rm = TRUE)
+  df$FILIPINO <- rowSums(df[,c("FILIPINO_M", "FILIPINO_F")], na.rm = TRUE)
+  df$HISPANIC <- rowSums(df[,c("HISPANIC_M", "HISPANIC_F")], na.rm = TRUE)
+  df$PACISLAND <- rowSums(df[,c("PACISLAND_M", "PACISLAND_F")], na.rm = TRUE)
+  df$TWOORMORE <- rowSums(df[,c("TWOORMORE_M", "TWOORMORE_F")], na.rm = TRUE)
+  df$WHITE <- rowSums(df[,c("WHITE_M", "WHITE_F")], na.rm = TRUE)
   
   # get rid of the separated gender columns
   df$AMINDIAN_F <- NULL
@@ -352,23 +350,21 @@ clean_demo_9907 <- function(df) {
   df[is.na(df)] <- 0
   
   # create a MALE column
-  df$TOTAL_MALE <- df$AMINDIAN_M + df$ASIAN_M + df$BLACK_M + df$FILIPINO_M + df$HISPANIC_M
-  + df$PACISLAND_M + df$TWOORMORE_M + df$WHITE_M
+  df$TOTAL_MALE <- rowSums(df[,c("AMINDIAN_M", "ASIAN_M", "BLACK_M", "FILIPINO_M", "HISPANIC_M", "PACISLAND_M", "TWOORMORE_M", "WHITE_M")], na.rm = TRUE) 
   # create a MALE column
-  df$TOTAL_FEMALE <- df$AMINDIAN_F + df$ASIAN_F + df$BLACK_F + df$FILIPINO_F + df$HISPANIC_F
-  + df$PACISLAND_F + df$TWOORMORE_F + df$WHITE_F
+  df$TOTAL_FEMALE <- rowSums(df[,c("AMINDIAN_F", "ASIAN_F", "BLACK_F", "FILIPINO_F", "HISPANIC_F", "PACISLAND_F", "TWOORMORE_F", "WHITE_F")], na.rm = TRUE)
   # create a TOTAL_ENROLL column
-  df$TOTAL_ENROLL <- df$TOTAL_MALE + df$TOTAL_FEMALE
+  df$TOTAL_ENROLL <- rowSums(df[,c("TOTAL_MALE", "TOTAL_FEMALE")], na.rm = TRUE)
   
   # create columns that contain total ethnicity
-  df$AMINDIAN <- df$AMINDIAN_M + df$AMINDIAN_F
-  df$ASIAN <- df$ASIAN_M + df$ASIAN_F
-  df$BLACK <- df$BLACK_M + df$BLACK_F
-  df$FILIPINO <- df$FILIPINO_M + df$FILIPINO_F
-  df$HISPANIC <- df$HISPANIC_M + df$HISPANIC_F
-  df$PACISLAND <- df$PACISLAND_M + df$PACISLAND_F
-  df$TWOORMORE <- df$TWOORMORE_M + df$TWOORMORE_F
-  df$WHITE <- df$WHITE_M + df$WHITE_F
+  df$AMINDIAN <- rowSums(df[,c("AMINDIAN_M", "AMINDIAN_F")], na.rm = TRUE)
+  df$ASIAN <- rowSums(df[,c("ASIAN_M", "ASIAN_F")], na.rm = TRUE)
+  df$BLACK <- rowSums(df[,c("BLACK_M", "BLACK_F")], na.rm = TRUE)
+  df$FILIPINO <- rowSums(df[,c("FILIPINO_M", "FILIPINO_F")], na.rm = TRUE)
+  df$HISPANIC <- rowSums(df[,c("HISPANIC_M", "HISPANIC_F")], na.rm = TRUE)
+  df$PACISLAND <- rowSums(df[,c("PACISLAND_M", "PACISLAND_F")], na.rm = TRUE)
+  df$TWOORMORE <- rowSums(df[,c("TWOORMORE_M", "TWOORMORE_F")], na.rm = TRUE)
+  df$WHITE <- rowSums(df[,c("WHITE_M", "WHITE_F")], na.rm = TRUE)
   
   # get rid of the separated gender columns
   df$AMINDIAN_F <- NULL
@@ -451,22 +447,20 @@ clean_demo_9498 <- function(df) {
   df[is.na(df)] <- 0
   
   # create a MALE column
-  df$TOTAL_MALE <- df$AMINDIAN_M + df$ASIAN_M + df$BLACK_M + df$FILIPINO_M + df$HISPANIC_M
-  + df$PACISLAND_M + df$WHITE_M
+  df$TOTAL_MALE <- rowSums(df[,c("AMINDIAN_M", "ASIAN_M", "BLACK_M", "FILIPINO_M", "HISPANIC_M", "PACISLAND_M", "WHITE_M")], na.rm = TRUE) 
   # create a MALE column
-  df$TOTAL_FEMALE <- df$AMINDIAN_F + df$ASIAN_F + df$BLACK_F + df$FILIPINO_F + df$HISPANIC_F
-  + df$PACISLAND_F + df$WHITE_F
+  df$TOTAL_FEMALE <- rowSums(df[,c("AMINDIAN_F", "ASIAN_F", "BLACK_F", "FILIPINO_F", "HISPANIC_F", "PACISLAND_F", "WHITE_F")], na.rm = TRUE)
   # create a TOTAL_ENROLL column
-  df$TOTAL_ENROLL <- df$TOTAL_MALE + df$TOTAL_FEMALE
+  df$TOTAL_ENROLL <- rowSums(df[,c("TOTAL_MALE", "TOTAL_FEMALE")], na.rm = TRUE)
   
   # create columns that contain total ethnicity
-  df$AMINDIAN <- df$AMINDIAN_M + df$AMINDIAN_F
-  df$ASIAN <- df$ASIAN_M + df$ASIAN_F
-  df$BLACK <- df$BLACK_M + df$BLACK_F
-  df$FILIPINO <- df$FILIPINO_M + df$FILIPINO_F
-  df$HISPANIC <- df$HISPANIC_M + df$HISPANIC_F
-  df$PACISLAND <- df$PACISLAND_M + df$PACISLAND_F
-  df$WHITE <- df$WHITE_M + df$WHITE_F
+  df$AMINDIAN <- rowSums(df[,c("AMINDIAN_M", "AMINDIAN_F")], na.rm = TRUE)
+  df$ASIAN <- rowSums(df[,c("ASIAN_M", "ASIAN_F")], na.rm = TRUE)
+  df$BLACK <- rowSums(df[,c("BLACK_M", "BLACK_F")], na.rm = TRUE)
+  df$FILIPINO <- rowSums(df[,c("FILIPINO_M", "FILIPINO_F")], na.rm = TRUE)
+  df$HISPANIC <- rowSums(df[,c("HISPANIC_M", "HISPANIC_F")], na.rm = TRUE)
+  df$PACISLAND <- rowSums(df[,c("PACISLAND_M", "PACISLAND_F")], na.rm = TRUE)
+  df$WHITE <- rowSums(df[,c("WHITE_M", "WHITE_F")], na.rm = TRUE)
   
   # get rid of the separated gender columns
   df$AMINDIAN_F <- NULL
@@ -532,13 +526,98 @@ add_info <- function(df_info, df_perf) {
   return(df_perf)
 }
 
+# Read in Each Dataset --------------------------------------------------------------------------------------------------------
+# dataset: performance
+data_perf_16 <- read_csv("data/sb_ca2016_1_csv_v3.txt")
+# dataset: info
+data_info_16 <- read_csv("data/sb_ca2016entities_csv.txt")
+# dataset: performance
+data_perf_15 <- read_csv("data/ca2015_1_csv_v3.txt")
+# dataset: info
+data_info_15 <- read_csv("data/ca2015entities_csv.txt")
+# dataset: performance
+data_perf_14 <- read_csv("data/ca2014_1_csv_v2.txt")
+# dataset: info
+data_info_14 <- read_csv("data/ca2014entities_csv.txt")
+# dataset: performance
+data_perf_13 <- read_csv("data/ca2013_1_csv_v3.txt")
+# dataset: info
+data_info_13 <- read_csv("data/ca2013entities_csv.txt")
+# dataset: performance
+data_perf_12 <- read_csv("data/ca2012_1_csv_v3.txt")
+# dataset: info
+data_info_12 <- read_csv("data/ca2012entities_csv.txt")
+# dataset: performance
+data_perf_11 <- read_csv("data/ca2011_1_csv_v3.txt")
+# dataset: info
+data_info_11 <- read_csv("data/ca2011entities_csv.txt")
+# dataset: performance
+data_perf_10 <- read_csv("data/ca2010_1_csv_v3.txt")
+# dataset: info
+data_info_10 <- read_csv("data/ca2010entities_csv.txt")
+# dataset: performance
+data_perf_09 <- read_csv("data/ca2009_1_csv_v3.txt")
+# dataset: info
+data_info_09 <- read_csv("data/ca2009entities_csv.txt")
+# dataset: performance
+data_perf_08 <- read_csv("data/ca2008_1_csv_v3.txt")
+# dataset: info
+data_info_08 <- read_csv("data/ca2008entities_csv.txt")
+# dataset: performance
+data_perf_07 <- read_csv("data/CA2007_1_CSV_v3.txt")
+# dataset: info
+data_info_07 <- read_csv("data/CA2007Entities_CSV.txt")
+# dataset: demographics
+data_demo_17 <- read_tsv("data/enroll_2017.txt")
+# dataset: demographics
+data_demo_16 <- read_tsv("data/enroll_2016.txt")
+# dataset: demographics
+data_demo_15 <- read_tsv("data/enroll_2015.txt")
+# dataset: demographics
+data_demo_14 <- read_tsv("data/enroll_2014.txt")
+# dataset: demographics
+data_demo_13 <- read_tsv("data/enroll_2013.txt")
+# dataset: demographics
+data_demo_12 <- read_tsv("data/enroll_2012.txt")
+# dataset: demographics
+data_demo_11 <- read_tsv("data/enroll_2011.txt")
+# dataset: demographics
+data_demo_10 <- read_tsv("data/enroll_2010.txt")
+# dataset: demographics
+data_demo_09 <- read_tsv("data/enroll_2009.txt")
+# dataset: demographics
+data_demo_08 <- read_tsv("data/enroll_2008.txt")
+# dataset: demographics
+data_demo_07 <- read_tsv("data/enroll_2007.txt")
+# dataset: demographics
+data_demo_06 <- read_tsv("data/enroll_2006.txt")
+# dataset: demographics
+data_demo_05 <- read_tsv("data/enroll_2005.txt")
+# dataset: demographics
+data_demo_04 <- read_tsv("data/enroll_2004.txt")
+# dataset: demographics
+data_demo_03 <- read_tsv("data/enroll_2003.txt")
+# dataset: demographics
+data_demo_02 <- read_tsv("data/enroll_2002.txt")
+# dataset: demographics
+data_demo_01 <- read_tsv("data/enroll_2001.txt")
+# dataset: demographics
+data_demo_00 <- read_tsv("data/enroll_2000.txt")
+# dataset: demographics
+data_demo_99 <- read_tsv("data/enroll_1999.txt")
+# dataset: demographics
+data_demo_98 <- read_tsv("data/enroll_1998.txt")
+# dataset: demographics
+data_demo_97 <- read_tsv("data/enroll_1997.txt")
+# dataset: demographics
+data_demo_96 <- read_tsv("data/enroll_1996.txt")
+# dataset: demographics
+data_demo_95 <- read_tsv("data/enroll_1995.txt")
+# dataset: demographics
+data_demo_94 <- read_tsv("data/enroll_1994.txt")
 
 # Performance --------------------------------------------------------------------------------------------------------
 # 2015-2016 -----
-# read in .csv file
-data_perf_16 <- read_csv("data/sb_ca2016_1_csv_v3.txt")
-data_info_16 <- read_csv("data/sb_ca2016entities_csv.txt")
-
 # keep wanted columns
 data_perf_16 <- data_perf_16 %>% 
                   select(c("County Code", "District Code", "School Code", "Filler", "Test Year", "Total CAASPP Enrollment",
@@ -636,14 +715,10 @@ data_perf_16[data_perf_16 == "é"] <- "e"
 data_perf_16[is.na(data_perf_16)] <- -99
 
 # write .csv file
-write.csv(data_perf_16, "cleaned_data/ca_perf_2016", row.names = FALSE)
+write.csv(data_perf_16, "cleaned_data/ca_perf_2016.csv", row.names = FALSE)
 
 
 # 2014-2015 -----
-# read in .csv file
-data_perf_15 <- read_csv("data/ca2015_1_csv_v3.txt")
-data_info_15 <- read_csv("data/ca2015entities_csv.txt")
-
 # keep wanted columns
 data_perf_15 <- data_perf_15 %>% 
   select(c("County Code", "District Code", "School Code", "filler", "Test Year", 
@@ -704,14 +779,10 @@ data_perf_15[is.na(data_perf_15)] <- -99
 data_perf <- full_join(data_perf_16, data_perf_15)
 
 # write .csv file
-write.csv(data_perf_15, "cleaned_data/ca_perf_2015", row.names = FALSE)
+write.csv(data_perf_15, "cleaned_data/ca_perf_2015.csv", row.names = FALSE)
 
 
 # 2013-2014 -----
-# read in .csv file
-data_perf_14 <- read_csv("data/ca2014_1_csv_v2.txt")
-data_info_14 <- read_csv("data/ca2014entities_csv.txt")
-
 # keep wanted columns
 data_perf_14 <- data_perf_14 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", 
@@ -813,14 +884,10 @@ data_perf_14[is.na(data_perf_14)] <- -99
 data_perf <- full_join(data_perf, data_perf_14)
 
 # write .csv file
-write.csv(data_perf_14, "cleaned_data/ca_perf_2014", row.names = FALSE)
+write.csv(data_perf_14, "cleaned_data/ca_perf_2014.csv", row.names = FALSE)
 
 
 # 2012-2013 -----
-# read in .csv file
-data_perf_13 <- read_csv("data/ca2013_1_csv_v3.txt")
-data_info_13 <- read_csv("data/ca2013entities_csv.txt")
-
 # keep wanted columns
 data_perf_13 <- data_perf_13 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", "Total STAR Enrollment",
@@ -924,14 +991,10 @@ data_perf_13[is.na(data_perf_13)] <- -99
 data_perf <- full_join(data_perf, data_perf_13)
 
 # write .csv file
-write.csv(data_perf_13, "cleaned_data/ca_perf_2013", row.names = FALSE)
+write.csv(data_perf_13, "cleaned_data/ca_perf_2013.csv", row.names = FALSE)
 
 
 # 2011-2012 -----
-# read in .csv file
-data_perf_12 <- read_csv("data/ca2012_1_csv_v3.txt")
-data_info_12 <- read_csv("data/ca2012entities_csv.txt")
-
 # keep wanted columns
 data_perf_12 <- data_perf_12 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", "Total STAR Enrollment",
@@ -1035,14 +1098,10 @@ data_perf_12[is.na(data_perf_12)] <- -99
 data_perf <- full_join(data_perf, data_perf_12)
 
 # write .csv file
-write.csv(data_perf_12, "cleaned_data/ca_perf_2012", row.names = FALSE)
+write.csv(data_perf_12, "cleaned_data/ca_perf_2012.csv", row.names = FALSE)
 
 
 # 2010-2011 -----
-# read in .csv file
-data_perf_11 <- read_csv("data/ca2011_1_csv_v3.txt")
-data_info_11 <- read_csv("data/ca2011entities_csv.txt")
-
 # keep wanted columns
 data_perf_11 <- data_perf_11 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", "Total STAR Enrollment",
@@ -1146,14 +1205,10 @@ data_perf_11[is.na(data_perf_11)] <- -99
 data_perf <- full_join(data_perf, data_perf_11)
 
 # write .csv file
-write.csv(data_perf_11, "cleaned_data/ca_perf_2011", row.names = FALSE)
+write.csv(data_perf_11, "cleaned_data/ca_perf_2011.csv", row.names = FALSE)
 
 
 # 2009-2010 -----
-# read in .csv file
-data_perf_10 <- read_csv("data/ca2010_1_csv_v3.txt")
-data_info_10 <- read_csv("data/ca2010entities_csv.txt")
-
 # keep wanted columns
 data_perf_10 <- data_perf_10 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", "Total STAR Enrollment",
@@ -1257,14 +1312,10 @@ data_perf_10[is.na(data_perf_10)] <- -99
 data_perf <- full_join(data_perf, data_perf_10)
 
 # write .csv file
-write.csv(data_perf_10, "cleaned_data/ca_perf_2010", row.names = FALSE)
+write.csv(data_perf_10, "cleaned_data/ca_perf_2010.csv", row.names = FALSE)
 
 
 # 2008-2009 -----
-# read in .csv file
-data_perf_09 <- read_csv("data/ca2009_1_csv_v3.txt")
-data_info_09 <- read_csv("data/ca2009entities_csv.txt")
-
 # keep wanted columns
 data_perf_09 <- data_perf_09 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Test Year", "Total STAR Enrollment",
@@ -1368,14 +1419,10 @@ data_perf_09[is.na(data_perf_09)] <- -99
 data_perf <- full_join(data_perf, data_perf_09)
 
 # write .csv file
-write.csv(data_perf_09, "cleaned_data/ca_perf_2009", row.names = FALSE)
+write.csv(data_perf_09, "cleaned_data/ca_perf_2009.csv", row.names = FALSE)
 
 
 # 2007-2008 -----
-# read in .csv file
-data_perf_08 <- read_csv("data/ca2008_1_csv_v3.txt")
-data_info_08 <- read_csv("data/ca2008entities_csv.txt")
-
 # keep wanted columns
 data_perf_08 <- data_perf_08 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Year", "Total STAR Enrollment",
@@ -1479,14 +1526,10 @@ data_perf_08[is.na(data_perf_08)] <- -99
 data_perf <- full_join(data_perf, data_perf_08)
 
 # write .csv file
-write.csv(data_perf_08, "cleaned_data/ca_perf_2008", row.names = FALSE)
+write.csv(data_perf_08, "cleaned_data/ca_perf_2008.csv", row.names = FALSE)
 
 
 # 2006-2007 -----
-# read in .csv file
-data_perf_07 <- read_csv("data/CA2007_1_CSV_v3.txt")
-data_info_07 <- read_csv("data/CA2007Entities_CSV.txt")
-
 # keep wanted columns
 data_perf_07 <- data_perf_07 %>% 
   select(c("County Code", "District Code", "School Code", "Charter Number", "Year", "Total STAR Enrollment",
@@ -1590,7 +1633,7 @@ data_perf_07[is.na(data_perf_07)] <- -99
 data_perf <- full_join(data_perf, data_perf_07)
 
 # write .csv file
-write.csv(data_perf_07, "cleaned_data/ca_perf_2007", row.names = FALSE)
+write.csv(data_perf_07, "cleaned_data/ca_perf_2007.csv", row.names = FALSE)
 
 
 # Finish -----
@@ -1598,7 +1641,7 @@ write.csv(data_perf_07, "cleaned_data/ca_perf_2007", row.names = FALSE)
 data_perf[is.na(data_perf)] <- -99
 
 # Save as .csv file
-write.csv(data_perf, "cleaned_data/ca_perf_2006_16", row.names = FALSE)
+write.csv(data_perf, "cleaned_data/ca_perf_2006_16.csv", row.names = FALSE)
 # Demographics --------------------------------------------------------------------------------------------------------
 # Notes:  -----
 # For 2010-17:
@@ -1623,9 +1666,6 @@ write.csv(data_perf, "cleaned_data/ca_perf_2006_16", row.names = FALSE)
 # Code 8 = Multiple or No Response
 
 # 2016-2017 -----
-# read in tab-separated .txt file
-data_demo_17 <- read_tsv("data/enroll_2017.txt")
-
 # clean everything
 data_demo_17 <- clean_demo_1017(data_demo_17)
 
@@ -1639,13 +1679,10 @@ data_demo_17 <- setcolorder(data_demo_17, demo_order)
 data_demo_17$CDS_CODE <- as.character(data_demo_17$CDS_CODE)
 
 # write .csv file
-write.csv(data_demo_17, "cleaned_data/ca_enroll_2017", row.names = FALSE)
+write.csv(data_demo_17, "cleaned_data/ca_enroll_2017.csv", row.names = FALSE)
 
 
 # 2015-2016 -----
-# read in tab-separated .txt file
-data_demo_16 <- read_tsv("data/enroll_2016.txt")
-
 # clean everything
 data_demo_16 <- clean_demo_1017(data_demo_16)
 
@@ -1663,13 +1700,10 @@ data_demo <- full_join(data_demo_17, data_demo_16)
 data_demo$CDS_CODE <- as.character(data_demo$CDS_CODE)
 
 # write .csv file
-write.csv(data_demo_16, "cleaned_data/ca_enroll_2016", row.names = FALSE)
+write.csv(data_demo_16, "cleaned_data/ca_enroll_2016.csv", row.names = FALSE)
 
 
 # 2014-2015 -----
-# read in tab-separated .txt file
-data_demo_15 <- read_tsv("data/enroll_2015.txt")
-
 # clean everything
 data_demo_15 <- clean_demo_1017(data_demo_15)
 
@@ -1686,13 +1720,10 @@ data_demo_15$CDS_CODE <- as.character(data_demo_15$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_15)
 
 # write .csv file
-write.csv(data_demo_15, "cleaned_data/ca_enroll_2015", row.names = FALSE)
+write.csv(data_demo_15, "cleaned_data/ca_enroll_2015.csv", row.names = FALSE)
 
 
 # 2013-2014 -----
-# read in tab-separated .txt file
-data_demo_14 <- read_tsv("data/enroll_2014.txt")
-
 # clean everything
 data_demo_14 <- clean_demo_1017(data_demo_14)
 
@@ -1709,7 +1740,7 @@ data_demo_14$CDS_CODE <- as.character(data_demo_14$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_14)
 
 # write .csv file
-write.csv(data_demo_14, "cleaned_data/ca_enroll_2014", row.names = FALSE)
+write.csv(data_demo_14, "cleaned_data/ca_enroll_2014.csv", row.names = FALSE)
 
 
 # 2012-2013 -----
@@ -1732,13 +1763,10 @@ data_demo_13$CDS_CODE <- as.character(data_demo_13$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_13)
 
 # write .csv file
-write.csv(data_demo_13, "cleaned_data/ca_enroll_2013", row.names = FALSE)
+write.csv(data_demo_13, "cleaned_data/ca_enroll_2013.csv", row.names = FALSE)
 
 
 # 2011-2012 -----
-# read in tab-separated .txt file
-data_demo_12 <- read_tsv("data/enroll_2012.txt")
-
 # clean everything
 data_demo_12 <- clean_demo_1017(data_demo_12)
 
@@ -1755,13 +1783,10 @@ data_demo_12$CDS_CODE <- as.character(data_demo_12$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_12)
 
 # write .csv file
-write.csv(data_demo_12, "cleaned_data/ca_enroll_2012", row.names = FALSE)
+write.csv(data_demo_12, "cleaned_data/ca_enroll_2012.csv", row.names = FALSE)
 
 
 # 2010-2011 -----
-# read in tab-separated .txt file
-data_demo_11 <- read_tsv("data/enroll_2011.txt")
-
 # clean everything
 data_demo_11 <- clean_demo_1017(data_demo_11)
 
@@ -1778,13 +1803,10 @@ data_demo_11$CDS_CODE <- as.character(data_demo_11$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_11)
 
 # write .csv file
-write.csv(data_demo_11, "cleaned_data/ca_enroll_2011", row.names = FALSE)
+write.csv(data_demo_11, "cleaned_data/ca_enroll_2011.csv", row.names = FALSE)
 
 
 # 2009-2010 -----
-# read in tab-separated .txt file
-data_demo_10 <- read_tsv("data/enroll_2010.txt")
-
 # clean everything
 data_demo_10 <- clean_demo_1017(data_demo_10)
 
@@ -1801,13 +1823,10 @@ data_demo_10$CDS_CODE <- as.character(data_demo_10$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_10)
 
 # write .csv file
-write.csv(data_demo_10, "cleaned_data/ca_enroll_2010", row.names = FALSE)
+write.csv(data_demo_10, "cleaned_data/ca_enroll_2010.csv", row.names = FALSE)
 
 
 # 2008-2009 -----
-# read in tab-separated .txt file
-data_demo_09 <- read_tsv("data/enroll_2009.txt")
-
 # clean everything
 data_demo_09 <- clean_demo_0809(data_demo_09)
 
@@ -1824,13 +1843,10 @@ data_demo_09$CDS_CODE <- as.character(data_demo_09$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_09)
 
 # write .csv file
-write.csv(data_demo_09, "cleaned_data/ca_enroll_2009", row.names = FALSE)
+write.csv(data_demo_09, "cleaned_data/ca_enroll_2009.csv", row.names = FALSE)
 
 
 # 2007-2008 -----
-# read in tab-separated .txt file
-data_demo_08 <- read_tsv("data/enroll_2008.txt")
-
 # clean everything
 data_demo_08 <- clean_demo_0809(data_demo_08)
 
@@ -1847,13 +1863,10 @@ data_demo_08$CDS_CODE <- as.character(data_demo_08$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_08)
 
 # write .csv file
-write.csv(data_demo_08, "cleaned_data/ca_enroll_2008", row.names = FALSE)
+write.csv(data_demo_08, "cleaned_data/ca_enroll_2008.csv", row.names = FALSE)
 
 
 # 2006-2007 -----
-# read in tab-separated .txt file
-data_demo_07 <- read_tsv("data/enroll_2007.txt")
-
 # clean everything
 data_demo_07 <- clean_demo_9907(data_demo_07)
 
@@ -1870,13 +1883,10 @@ data_demo_07$CDS_CODE <- as.character(data_demo_07$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_07)
 
 # write .csv file
-write.csv(data_demo_07, "cleaned_data/ca_enroll_2007", row.names = FALSE)
+write.csv(data_demo_07, "cleaned_data/ca_enroll_2007.csv", row.names = FALSE)
 
 
 # 2005-2006 -----
-# read in tab-separated .txt file
-data_demo_06 <- read_tsv("data/enroll_2006.txt")
-
 # clean everything
 data_demo_06 <- clean_demo_9907(data_demo_06)
 
@@ -1893,13 +1903,10 @@ data_demo_06$CDS_CODE <- as.character(data_demo_06$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_06)
 
 # write .csv file
-write.csv(data_demo_06, "cleaned_data/ca_enroll_2006", row.names = FALSE)
+write.csv(data_demo_06, "cleaned_data/ca_enroll_2006.csv", row.names = FALSE)
 
 
 # 2004-2005 -----
-# read in tab-separated .txt file
-data_demo_05 <- read_tsv("data/enroll_2005.txt")
-
 # clean everything
 data_demo_05 <- clean_demo_9907(data_demo_05)
 
@@ -1916,13 +1923,10 @@ data_demo_05$CDS_CODE <- as.character(data_demo_05$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_05)
 
 # write .csv file
-write.csv(data_demo_05, "cleaned_data/ca_enroll_2005", row.names = FALSE)
+write.csv(data_demo_05, "cleaned_data/ca_enroll_2005.csv", row.names = FALSE)
 
 
 # 2003-2004 -----
-# read in tab-separated .txt file
-data_demo_04 <- read_tsv("data/enroll_2004.txt")
-
 # clean everything
 data_demo_04 <- clean_demo_9907(data_demo_04)
 
@@ -1939,13 +1943,10 @@ data_demo_04$CDS_CODE <- as.character(data_demo_04$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_04)
 
 # write .csv file
-write.csv(data_demo_04, "cleaned_data/ca_enroll_2004", row.names = FALSE)
+write.csv(data_demo_04, "cleaned_data/ca_enroll_2004.csv", row.names = FALSE)
 
 
 # 2002-2003 -----
-# read in tab-separated .txt file
-data_demo_03 <- read_tsv("data/enroll_2003.txt")
-
 # clean everything
 data_demo_03 <- clean_demo_9907(data_demo_03)
 
@@ -1962,13 +1963,10 @@ data_demo_03$CDS_CODE <- as.character(data_demo_03$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_03)
 
 # write .csv file
-write.csv(data_demo_03, "cleaned_data/ca_enroll_2003", row.names = FALSE)
+write.csv(data_demo_03, "cleaned_data/ca_enroll_2003.csv", row.names = FALSE)
 
 
 # 2001-2002 -----
-# read in tab-separated .txt file
-data_demo_02 <- read_tsv("data/enroll_2002.txt")
-
 # clean everything
 data_demo_02 <- clean_demo_9907(data_demo_02)
 
@@ -1985,13 +1983,10 @@ data_demo_02$CDS_CODE <- as.character(data_demo_02$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_02)
 
 # write .csv file
-write.csv(data_demo_02, "cleaned_data/ca_enroll_2002", row.names = FALSE)
+write.csv(data_demo_02, "cleaned_data/ca_enroll_2002.csv", row.names = FALSE)
 
 
 # 2000-2001 -----
-# read in tab-separated .txt file
-data_demo_01 <- read_tsv("data/enroll_2001.txt")
-
 # clean everything
 data_demo_01 <- clean_demo_9907(data_demo_01)
 
@@ -2008,13 +2003,10 @@ data_demo_01$CDS_CODE <- as.character(data_demo_01$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_01)
 
 # write .csv file
-write.csv(data_demo_01, "cleaned_data/ca_enroll_2001", row.names = FALSE)
+write.csv(data_demo_01, "cleaned_data/ca_enroll_2001.csv", row.names = FALSE)
 
 
 # 1999-2000 -----
-# read in tab-separated .txt file
-data_demo_00 <- read_tsv("data/enroll_2000.txt")
-
 # clean everything
 data_demo_00 <- clean_demo_9907(data_demo_00)
 
@@ -2028,13 +2020,10 @@ data_demo_00 <- setcolorder(data_demo_00, demo_order_3)
 data_demo <- full_join(data_demo, data_demo_00)
 
 # write .csv file
-write.csv(data_demo_00, "cleaned_data/ca_enroll_2000", row.names = FALSE)
+write.csv(data_demo_00, "cleaned_data/ca_enroll_2000.csv", row.names = FALSE)
 
 
 # 1998-1999 -----
-# read in tab-separated .txt file
-data_demo_99 <- read_tsv("data/enroll_1999.txt")
-
 # clean everything
 data_demo_99 <- clean_demo_9907(data_demo_99)
 
@@ -2051,13 +2040,10 @@ data_demo_99$CDS_CODE <- as.character(data_demo_99$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_99)
 
 # write .csv file
-write.csv(data_demo_99, "cleaned_data/ca_enroll_1999", row.names = FALSE)
+write.csv(data_demo_99, "cleaned_data/ca_enroll_1999.csv", row.names = FALSE)
 
 
 # 1997-1998 -----
-# read in tab-separated .txt file
-data_demo_98 <- read_tsv("data/enroll_1998.txt")
-
 # clean everything
 data_demo_98 <- clean_demo_9498(data_demo_98)
 
@@ -2074,13 +2060,10 @@ data_demo_98$CDS_CODE <- as.character(data_demo_98$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_98)
 
 # write .csv file
-write.csv(data_demo_98, "cleaned_data/ca_enroll_1998", row.names = FALSE)
+write.csv(data_demo_98, "cleaned_data/ca_enroll_1998.csv", row.names = FALSE)
 
 
 # 1996-1997 -----
-# read in tab-separated .txt file
-data_demo_97 <- read_tsv("data/enroll_1997.txt")
-
 # clean everything
 data_demo_97 <- clean_demo_9498(data_demo_97)
 
@@ -2097,13 +2080,10 @@ data_demo_97$CDS_CODE <- as.character(data_demo_97$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_97)
 
 # write .csv file
-write.csv(data_demo_97, "cleaned_data/ca_enroll_1997", row.names = FALSE)
+write.csv(data_demo_97, "cleaned_data/ca_enroll_1997.csv", row.names = FALSE)
 
 
 # 1995-1996 -----
-# read in tab-separated .txt file
-data_demo_96 <- read_tsv("data/enroll_1996.txt")
-
 # clean everything
 data_demo_96 <- clean_demo_9498(data_demo_96)
 
@@ -2120,13 +2100,10 @@ data_demo_96$CDS_CODE <- as.character(data_demo_96$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_96)
 
 # write .csv file
-write.csv(data_demo_96, "cleaned_data/ca_enroll_1996", row.names = FALSE)
+write.csv(data_demo_96, "cleaned_data/ca_enroll_1996.csv", row.names = FALSE)
 
 
 # 1994-1995 -----
-# read in tab-separated .txt file
-data_demo_95 <- read_tsv("data/enroll_1995.txt")
-
 # clean everything
 data_demo_95 <- clean_demo_9498(data_demo_95)
 
@@ -2143,13 +2120,10 @@ data_demo_95$CDS_CODE <- as.character(data_demo_95$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_95)
 
 # write .csv file
-write.csv(data_demo_95, "cleaned_data/ca_enroll_1995", row.names = FALSE)
+write.csv(data_demo_95, "cleaned_data/ca_enroll_1995.csv", row.names = FALSE)
 
 
 # 1993-1994 -----
-# read in tab-separated .txt file
-data_demo_94 <- read_tsv("data/enroll_1994.txt")
-
 # clean everything
 data_demo_94 <- clean_demo_9498(data_demo_94)
 
@@ -2166,7 +2140,7 @@ data_demo_97$CDS_CODE <- as.character(data_demo_97$CDS_CODE)
 data_demo <- full_join(data_demo, data_demo_94)
 
 # write .csv file
-write.csv(data_demo_94, "cleaned_data/ca_enroll_1994", row.names = FALSE)
+write.csv(data_demo_94, "cleaned_data/ca_enroll_1994.csv", row.names = FALSE)
 
 
 # Finish -----
@@ -2174,11 +2148,11 @@ write.csv(data_demo_94, "cleaned_data/ca_enroll_1994", row.names = FALSE)
 data_demo[is.na(data_demo)] <- -99
 
 # Save as .csv file
-write.csv(data_demo, "cleaned_data/ca_enroll_1994_17", row.names = FALSE)
+write.csv(data_demo, "cleaned_data/ca_enroll_1994_17.csv", row.names = FALSE)
 
 # Final Finish --------------------------------------------------------------------------------------------------------
 # Save as .RData file
-save.image(file="cleaned_data/ca_perf_demo_clean.Rdata")
+save.image(file="cleaned_data/ca_perf_enroll_clean.Rdata")
 # Save as .RDS 
 saveRDS(data_demo, file="cleaned_data/ca_enroll_clean.rds")
 saveRDS(data_perf, file="cleaned_data/ca_perf_clean.rds")

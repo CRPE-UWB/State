@@ -3,7 +3,7 @@
 #              on Performance and Demographics/Enrollment
 # Title: Cleaning Michigan 
 # Created by: Kevin Cha on 07-24-17
-# Updated by: Kevin Cha on 07-25-17
+# Updated by: Kevin Cha on 08-08-17
 # Data from: 
 #       Demographics: https://www.mischooldata.org/DistrictSchoolProfiles/EntitySummary/SchoolDataFile.aspx
 #               -ISD: All ISDs in State   -District: All Districts in State    -School: All Schools in State
@@ -48,6 +48,8 @@ perf_list2 <- c("YEAR", "ISD_CODE", "ISD_NAME", "DISTRICT_CODE", "DISTRICT_NAME"
 no_more_special_characters <- function(df_col) {
   # need to replace the chracters
   require(gsubfn)
+  # make sure the col is character
+  df_col <- as.character(df_col)
   # list of special characters to replace with
   unwanted_array = list(    'Š'='S', 'š'='s', 'Ž'='Z', 'ž'='z', 'À'='A', 'Á'='A', 'Â'='A', 'Ã'='A', 'Ä'='A', 'Å'='A', 'Æ'='A', 'Ç'='C', 'È'='E', 'É'='E',
                             'Ê'='E', 'Ë'='E', 'Ì'='I', 'Í'='I', 'Î'='I', 'Ï'='I', 'Ñ'='N', 'Ò'='O', 'Ó'='O', 'Ô'='O', 'Õ'='O', 'Ö'='O', 'Ø'='O', 'Ù'='U',
@@ -207,23 +209,60 @@ clean_perf <- function(df) {
   return(df)
 }
   
+
+# Read in Each Dataset --------------------------------------------------------------------------------------------------------
+# dataset: performance
+data_perf_08 <- read.csv("data/accountability_200708.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: performance
+data_perf_09 <- read.csv("data/accountability_200809.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: performance
+data_perf_10 <- read.csv("data/accountability_200910.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: performance
+data_perf_11 <- read.csv("data/accountability_201011.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: performance
+data_perf_12 <- read.csv("data/accountability_201112.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_03 <- read.csv("data/studentcount_200203.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_04 <- read.csv("data/studentcount_200304.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_05 <- read.csv("data/studentcount_200405.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_06 <- read.csv("data/studentcount_200506.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_07 <- read.csv("data/studentcount_200607.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_08 <- read.csv("data/studentcount_200708.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_09 <- read.csv("data/studentcount_200809.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_10 <- read.csv("data/studentcount_200910.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_11 <- read.csv("data/studentcount_201011.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_12 <- read.csv("data/studentcount_201112.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_13 <- read.csv("data/studentcount_201213.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_14 <- read.csv("data/studentcount_201314.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_15 <- read.csv("data/studentcount_201415.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_16 <- read.csv("data/studentcount_201516.csv", stringsAsFactors = FALSE, header = TRUE)
+# dataset: demographics
+data_demo_17 <- read.csv("data/studentcount_201617.csv", stringsAsFactors = FALSE, header = TRUE)
+
 # Performance --------------------------------------------------------------------------------------------------------
 
 # 2007-2008 -----
-# Read in csv file
-data_perf_08 <- read.csv("data/accountability_200708.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean everything
 data_perf_08 <- clean_perf(data_perf_08)
 
 # write .csv file
-write.csv(data_perf_08,"cleaned_data/data_perf_2008.csv", row.names = FALSE)
+write.csv(data_perf_08,"cleaned_data/mi_perf_2008.csv", row.names = FALSE)
 
 
 # 2008-2009 -----
-# Read in csv file
-data_perf_09 <- read.csv("data/accountability_200809.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean everything
 data_perf_09 <- clean_perf(data_perf_09)
 
@@ -231,12 +270,9 @@ data_perf_09 <- clean_perf(data_perf_09)
 data_perf <- full_join(data_perf_08, data_perf_09)
 
 # write as .csv
-write.csv(data_perf_09,"cleaned_data/data_perf_2009.csv", row.names = FALSE)
+write.csv(data_perf_09,"cleaned_data/mi_perf_2009.csv", row.names = FALSE)
 
 # 2009-2010 -----
-# Read in csv file
-data_perf_10 <- read.csv("data/accountability_200910.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean everything
 data_perf_10 <- clean_perf(data_perf_10)
 
@@ -244,13 +280,10 @@ data_perf_10 <- clean_perf(data_perf_10)
 data_perf <- full_join(data_perf, data_perf_10)
 
 # write as .csv
-write.csv(data_perf_10,"cleaned_data/data_perf_2010.csv", row.names = FALSE)
+write.csv(data_perf_10,"cleaned_data/mi_perf_2010.csv", row.names = FALSE)
 
 
 # 2010-2011 -----
-# Read in csv file
-data_perf_11 <- read.csv("data/accountability_201011.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean everything
 data_perf_11 <- clean_perf(data_perf_11)
 
@@ -258,13 +291,10 @@ data_perf_11 <- clean_perf(data_perf_11)
 data_perf <- full_join(data_perf, data_perf_11)
 
 # write as .csv
-write.csv(data_perf_11,"cleaned_data/data_perf_2011.csv", row.names = FALSE)
+write.csv(data_perf_11,"cleaned_data/mi_perf_2011.csv", row.names = FALSE)
 
 
 # 2011-2012 -----
-# Read in csv file
-data_perf_12 <- read.csv("data/accountability_201112.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean everything
 data_perf_12 <- clean_perf(data_perf_12)
 
@@ -272,30 +302,24 @@ data_perf_12 <- clean_perf(data_perf_12)
 data_perf <- full_join(data_perf, data_perf_12)
 
 # write as .csv
-write.csv(data_perf_12,"cleaned_data/data_perf_2012.csv", row.names = FALSE)
+write.csv(data_perf_12,"cleaned_data/mi_perf_2012.csv", row.names = FALSE)
 
 
 # Finish -----
-write.csv(data_perf,"cleaned_data/data_perf_2008_12.csv", row.names = FALSE)
+write.csv(data_perf,"cleaned_data/mi_perf_2008_12.csv", row.names = FALSE)
 
 
 # Demographics --------------------------------------------------------------------------------------------------------
 
 # 2002-2003 -----
-# Read in csv file
-data_demo_03 <- read.csv("data/studentcount_200203.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_03 <- clean_demo(data_demo_03)
 
 # Save as .csv file
-write.csv(data_demo_03,"cleaned_data/data_enroll_2003.csv", row.names = FALSE)
+write.csv(data_demo_03,"cleaned_data/mi_enroll_2003.csv", row.names = FALSE)
 
 
 # 2003-2004 -----
-# Read in csv file
-data_demo_04 <- read.csv("data/studentcount_200304.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_04 <- clean_demo(data_demo_04)
 
@@ -303,13 +327,10 @@ data_demo_04 <- clean_demo(data_demo_04)
 data_demo <- full_join(data_demo_03, data_demo_04)
 
 # Save as .csv file
-write.csv(data_demo_04,"cleaned_data/data_enroll_2004.csv", row.names = FALSE)
+write.csv(data_demo_04,"cleaned_data/mi_enroll_2004.csv", row.names = FALSE)
 
 
 # 2004-2005 -----
-# Read in csv file
-data_demo_05 <- read.csv("data/studentcount_200405.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_05 <- clean_demo(data_demo_05)
 
@@ -317,13 +338,10 @@ data_demo_05 <- clean_demo(data_demo_05)
 data_demo <- full_join(data_demo, data_demo_05)
 
 # Save as .csv file
-write.csv(data_demo_05,"cleaned_data/data_enroll_2005.csv", row.names = FALSE)
+write.csv(data_demo_05,"cleaned_data/mi_enroll_2005.csv", row.names = FALSE)
 
 
 # 2005-2006 -----
-# Read in csv file
-data_demo_06 <- read.csv("data/studentcount_200506.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_06 <- clean_demo(data_demo_06)
 
@@ -331,13 +349,10 @@ data_demo_06 <- clean_demo(data_demo_06)
 data_demo <- full_join(data_demo, data_demo_06)
 
 # Save as .csv file
-write.csv(data_demo_06,"cleaned_data/data_enroll_2006.csv", row.names = FALSE)
+write.csv(data_demo_06,"cleaned_data/mi_enroll_2006.csv", row.names = FALSE)
 
 
 # 2006-2007 -----
-# Read in csv file
-data_demo_07 <- read.csv("data/studentcount_200607.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_07 <- clean_demo(data_demo_07)
 
@@ -345,13 +360,10 @@ data_demo_07 <- clean_demo(data_demo_07)
 data_demo <- full_join(data_demo, data_demo_06)
 
 # Save as .csv file
-write.csv(data_demo_07,"cleaned_data/data_enroll_2007.csv", row.names = FALSE)
+write.csv(data_demo_07,"cleaned_data/mi_enroll_2007.csv", row.names = FALSE)
 
 
 # 2007-2008 -----
-# Read in csv file
-data_demo_08 <- read.csv("data/studentcount_200708.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_08 <- clean_demo(data_demo_08)
 
@@ -359,13 +371,10 @@ data_demo_08 <- clean_demo(data_demo_08)
 data_demo <- full_join(data_demo, data_demo_08)
 
 # Save as .csv file
-write.csv(data_demo_08,"cleaned_data/data_enroll_2008.csv", row.names = FALSE)
+write.csv(data_demo_08,"cleaned_data/mi_enroll_2008.csv", row.names = FALSE)
 
 
 # 2008-2009 -----
-# Read in csv file
-data_demo_09 <- read.csv("data/studentcount_200809.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_09 <- clean_demo(data_demo_09)
 
@@ -373,13 +382,10 @@ data_demo_09 <- clean_demo(data_demo_09)
 data_demo <- full_join(data_demo, data_demo_09)
 
 # Save as .csv file
-write.csv(data_demo_09,"cleaned_data/data_enroll_2009.csv", row.names = FALSE)
+write.csv(data_demo_09,"cleaned_data/mi_enroll_2009.csv", row.names = FALSE)
 
 
 # 2009-2010 -----
-# Read in csv file
-data_demo_10 <- read.csv("data/studentcount_200910.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_10 <- clean_demo(data_demo_10)
 
@@ -387,13 +393,10 @@ data_demo_10 <- clean_demo(data_demo_10)
 data_demo <- full_join(data_demo, data_demo_10)
 
 # Save as .csv file
-write.csv(data_demo_10,"cleaned_data/data_enroll_2010.csv", row.names = FALSE)
+write.csv(data_demo_10,"cleaned_data/mi_enroll_2010.csv", row.names = FALSE)
 
 
 # 2010-2011 -----
-# Read in csv file
-data_demo_11 <- read.csv("data/studentcount_201011.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_11 <- clean_demo(data_demo_11)
 
@@ -401,13 +404,10 @@ data_demo_11 <- clean_demo(data_demo_11)
 data_demo <- full_join(data_demo, data_demo_11)
 
 # Save as .csv file
-write.csv(data_demo_11,"cleaned_data/data_enroll_2011.csv", row.names = FALSE)
+write.csv(data_demo_11,"cleaned_data/mi_enroll_2011.csv", row.names = FALSE)
 
 
 # 2011-2012 -----
-# Read in csv file
-data_demo_12 <- read.csv("data/studentcount_201112.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_12 <- clean_demo(data_demo_12)
 
@@ -415,13 +415,10 @@ data_demo_12 <- clean_demo(data_demo_12)
 data_demo <- full_join(data_demo, data_demo_12)
 
 # Save as .csv file
-write.csv(data_demo_12,"cleaned_data/data_enroll_2012.csv", row.names = FALSE)
+write.csv(data_demo_12,"cleaned_data/mi_enroll_2012.csv", row.names = FALSE)
 
 
 # 2012-2013 -----
-# Read in csv file
-data_demo_13 <- read.csv("data/studentcount_201213.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_13 <- clean_demo(data_demo_13)
 
@@ -429,13 +426,10 @@ data_demo_13 <- clean_demo(data_demo_13)
 data_demo <- full_join(data_demo, data_demo_13)
 
 # Save as .csv file
-write.csv(data_demo_13,"cleaned_data/data_enroll_2013.csv", row.names = FALSE)
+write.csv(data_demo_13,"cleaned_data/mi_enroll_2013.csv", row.names = FALSE)
 
 
 # 2013-2014 -----
-# Read in csv file
-data_demo_14 <- read.csv("data/studentcount_201314.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_14 <- clean_demo(data_demo_14)
 
@@ -443,13 +437,10 @@ data_demo_14 <- clean_demo(data_demo_14)
 data_demo <- full_join(data_demo, data_demo_14)
 
 # Save as .csv file
-write.csv(data_demo_13,"cleaned_data/data_enroll_2014.csv", row.names = FALSE)
+write.csv(data_demo_13,"cleaned_data/mi_enroll_2014.csv", row.names = FALSE)
 
 
 # 2014-2015 -----
-# Read in csv file
-data_demo_15 <- read.csv("data/studentcount_201415.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_15 <- clean_demo(data_demo_15)
 
@@ -457,13 +448,10 @@ data_demo_15 <- clean_demo(data_demo_15)
 data_demo <- full_join(data_demo, data_demo_15)
 
 # Save as .csv file
-write.csv(data_demo_15,"cleaned_data/data_enroll_2015.csv", row.names = FALSE)
+write.csv(data_demo_15,"cleaned_data/mi_enroll_2015.csv", row.names = FALSE)
 
 
 # 2015-2016 -----
-# Read in csv file
-data_demo_16 <- read.csv("data/studentcount_201516.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_16 <- clean_demo(data_demo_16)
 
@@ -471,13 +459,10 @@ data_demo_16 <- clean_demo(data_demo_16)
 data_demo <- full_join(data_demo, data_demo_16)
 
 # Save as .csv file
-write.csv(data_demo_16,"cleaned_data/data_enroll_2016.csv", row.names = FALSE)
+write.csv(data_demo_16,"cleaned_data/mi_enroll_2016.csv", row.names = FALSE)
 
 
 # 2016-2017 -----
-# Read in csv file
-data_demo_17 <- read.csv("data/studentcount_201617.csv", stringsAsFactors = FALSE, header = TRUE)
-
 # clean it
 data_demo_17 <- clean_demo(data_demo_17)
 
@@ -485,14 +470,14 @@ data_demo_17 <- clean_demo(data_demo_17)
 data_demo <- full_join(data_demo, data_demo_17)
 
 # Save as .csv file
-write.csv(data_demo_17,"cleaned_data/data_enroll_2017.csv", row.names = FALSE)
+write.csv(data_demo_17,"cleaned_data/mi_enroll_2017.csv", row.names = FALSE)
 
 # Finish -----
-write.csv(data_demo,"cleaned_data/data_enroll_2003_17.csv", row.names = FALSE)
+write.csv(data_demo,"cleaned_data/mi_enroll_2003_17.csv", row.names = FALSE)
 
 # Final Finish --------------------------------------------------------------------------------------------------------
 # Save as .RData file
-save.image(file="cleaned_data/ok_perf_demo_clean.Rdata")
+save.image(file="cleaned_data/mi_perf_enroll_clean.Rdata")
 # Save as .RDS 
 saveRDS(data_demo, file="cleaned_data/mi_enroll_clean.rds")
 saveRDS(data_perf, file="cleaned_data/mi_perf_clean.rds")
